@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+set -uo pipefail
+IFS=$'\t\n'
+
+# Verification script for macOS VirtualBox and system optimization
+main() {
+  if [[ $# -ne 1 ]]; then
+    echo "Usage: $0 <VM_NAME>" >&2
+    echo "Please provide the name of the VirtualBox VM to optimize." >&2
+    exit 2
+  fi
+  local vm_name
+  vm_name="${1}"
+
+  echo "Checking macOS and VirtualBox optimization status...
+" >&2
+  check_file_descriptor_limits
+  check_sysctl_networking_and_disk_tweaks
+  check_vm_settings "${vm_name}"
+  echo "
+End of status check."
+
+}
+
+check_file_descriptor_limits() {
+  echo -n "File descriptor limit: "
+  ulimit -n
+}
+
+check_sysctl_networking_and_disk_tweaks(){
+  echo "Checking sysctl settings..." >&2
+  sysctl net.inet.tcp.delayed_ack | grep 'net.inet.tcp.delayed_ack'
+  sysctl net.inet.tcp.mssdflt | grep 'net.inet.tcp.mssdflt'
+  sysctl net.inet.tcp.recvspace | grep 'net.inet.tcp.recvspace'
+  sysctl net.inet.tcp.sendspace | grep 'net.inet.tcp.sendspace'
+}
+
+check_vm_settings() {
+  local vm_name
+  vm_name="${1}"
+
+  echo "Checking VM settings for '${vm_name}'..."
+  VBoxManage showvminfo "${vm_name}" --machinereadable | grep -E 'accelerate2dvideo|accelerate3d|vram|graphicscontroller'
+  VBoxManage showvminfo "${vm_name}" | grep -i 'Host I/O Cache'
+}
+
+main "$@"

@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\t\n'
+
+# Full optimization for VirtualBox on macOS Sierra
+main() {
+  if [[ $# -ne 1 ]]; then
+    echo "Usage: $0 <VM_NAME>" >&2
+    echo "Please provide the name of the VirtualBox VM to optimize." >&2
+    exit 2
+  fi
+  local vm_name
+  vm_name="${1}"
+
+  echo "Starting full macOS VirtualBox host and VM optimization..." >&2
+  make_sure_vboxmanage_is_available
+  increase_system_file_descriptor_limits_permanently
+  make_sysctl_networking_and_disk_prefetch_tweaks_permanent
+  configure_vm_specific_settings_using_v_box_manage "${vm_name}"
+
+  echo "All host and VM optimizations complete!" >&2
+  echo "You should reboot macOS now to fully activate system tweaks." >&2
+}
+
+make_sure_vboxmanage_is_available() {
+    if ! command -v VBoxManage &> /dev/null; then
+        echo "Error: VBoxManage not found. Please install VirtualBox first." >&2
+        exit 1
+    fi
+}
+
+increase_system_file_descriptor_limits_permanently() {
+  echo "Setting permanent file limits..."
+  sudo tee /Library/LaunchDaemons/limit.maxfiles.plist > /dev/null <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>limit.maxfiles</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>launchctl</string>
+    <string>limit</string>
+    <string>maxfiles</string>
+    <string>65536</string>
+    <string>200000</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+</dict>
+</plist>
+EOF
+  sudo chown root:wheel /Library/LaunchDaemons/limit.maxfiles.plist
+}
+
+make_sysctl_networking_and_disk_prefetch_tweaks_permanent() {
+  echo "Persisting sysctl settings..." >&2
+  sudo tee -a /etc/sysctl.conf > /dev/null <<EOF
+# VirtualBox performance tuning
+net.inet.tcp.delayed_ack=0
+net.inet.tcp.mssdflt=1460
+net.inet.tcp.recvspace=65536
+net.inet.tcp.sendspace=65536
+EOF
+
+  # Apply immediately
+  sudo sysctl -w net.inet.tcp.delayed_ack=0
+  sudo sysctl -w net.inet.tcp.mssdflt=1460
+  sudo sysctl -w net.inet.tcp.recvspace=65536
+  sudo sysctl -w net.inet.tcp.sendspace=65536
+}
+
+configure_vm_specific_settings_using_v_box_manage() {
+  local vm_name
+  vm_name="${1}"
+  echo "Applying VM-specific settings for '${vm_name}'..." >&2
+
+  VBoxManage storagectl "${vm_name}" --name "SATA Controller" --hostiocache on
+  VBoxManage modifyvm "${vm_name}" --accelerate2dvideo on
+  VBoxManage modifyvm "${vm_name}" --graphicscontroller vmsvga
+  VBoxManage modifyvm "${vm_name}" --accelerate3d on
+  VBoxManage modifyvm "${vm_name}" --vram 128
+}
+
+# Run the main function
+main "$@"

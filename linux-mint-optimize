@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\t\n'
+
+# Applies guest optimizations inside Linux Mint VM
+main() {
+  echo "Starting Linux Mint guest optimizations..." >&2
+  install_guest_additions
+  enable_zram_and_swappiness
+  echo "Guest optimizations complete. Consider rebooting."
+}
+
+install_guest_additions() {
+  sudo apt-get update
+  sudo apt-get install -y build-essential dkms "linux-headers-$(uname -r)"
+  if [[ ! -f /media/cdrom/VBoxLinuxAdditions.run ]]; then
+    echo "Insert Guest Additions CD (Devices > Insert Guest Additions CD Image)" >&2
+    exit 1
+  fi
+  sudo /media/cdrom/VBoxLinuxAdditions.run || true
+  echo "Guest Additions installed."
+}
+
+enable_zram_and_swappiness() {
+  sudo apt-get install -y zram-config
+  echo "vm.swappiness=10" | sudo tee /etc/sysctl.d/99-swappiness.conf >/dev/null
+  sudo sysctl -p /etc/sysctl.d/99-swappiness.conf
+  echo "Zram and swappiness configured."
+}
+
+# Run the main function
+main "$@"
