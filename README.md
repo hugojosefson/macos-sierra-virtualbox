@@ -63,8 +63,8 @@ In the `Terminal` app, run the following command:
 
 1. Start your VM.
 2. In the VirtualBox GUI, click **Devices** → **Insert Guest Additions CD
-   Image**).
-3. Inside the VM, in Linux Mint, install the script:
+   Image**.
+3. Inside the VM, in Linux Mint, open a terminal app, and install the script:
 
 ```bash
 curl -fsSL "https://github.com/hugojosefson/macos-sierra-virtualbox/tarball/main" | tar -xzv --strip-components=1 --wildcards \*/linux-mint-optimize
