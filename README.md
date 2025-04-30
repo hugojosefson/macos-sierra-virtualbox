@@ -21,7 +21,7 @@ Open the `Terminal` app in macOS Sierra, and copy-paste the following command
 into it:
 
 ```bash
-curl -fsSL "https://github.com/hugojosefson/macos-sierra-virtualbox/tarball/main" | tar -xzv --strip-components=1 macos-sierra-virtualbox-main/macos-sierra-virtualbox-{optimize,check}
+curl -fsSL "https://github.com/hugojosefson/macos-sierra-virtualbox/tarball/main" | tar -xzv --strip-components=1 --wildcards \*/macos-sierra-virtualbox-{optimize,check}
 ```
 
 (Press `ENTER` after each command)
@@ -67,7 +67,7 @@ In the `Terminal` app, run the following command:
 3. Inside the VM, in Linux Mint, install the script:
 
 ```bash
-curl -fsSL "https://github.com/hugojosefson/macos-sierra-virtualbox/tarball/main" | tar -xzv --strip-components=1 macos-sierra-virtualbox-main/linux-mint-optimize
+curl -fsSL "https://github.com/hugojosefson/macos-sierra-virtualbox/tarball/main" | tar -xzv --strip-components=1 --wildcards \*/linux-mint-optimize
 ```
 
 Then run the script:
