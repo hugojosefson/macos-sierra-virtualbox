@@ -13,11 +13,13 @@ main() {
 install_guest_additions() {
   sudo apt-get update
   sudo apt-get install -y build-essential dkms "linux-headers-$(uname -r)"
-  if [[ ! -f /media/cdrom/VBoxLinuxAdditions.run ]]; then
-    echo "Insert Guest Additions CD (Devices > Insert Guest Additions CD Image)" >&2
+  local expected_path
+  expected_path="$(ls /media/*/VBox_GAs_*/VBoxLinuxAdditions.run)"
+  if [[ ! -f "${expected_path}" ]]; then
+    echo "Insert Guest Additions CD (Devices > Insert Guest Additions CD Image), then try running this script again!" >&2
     exit 1
   fi
-  sudo /media/cdrom/VBoxLinuxAdditions.run || true
+  sudo "${expected_path}" || true
   echo "Guest Additions installed."
 }
 
