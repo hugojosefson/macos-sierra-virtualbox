@@ -33,15 +33,16 @@ It will download the scripts.
 ### 0. Know the name of your VM
 
 You need to know the name of the Virtual Machine (VM) that you want to optimize.
-You can find it in the VirtualBox GUI, or by running the following command in
+
+In the instructions below, I will use `Hugo Linux` as example name of the VM.
+Replace it with your actual VM's name.
+
+You can find yours in the VirtualBox GUI, or by running the following command in
 the `Terminal` app:
 
 ```bash
 VBoxManage list vms
 ```
-
-In the instructions below, I will use `Hugo Linux` as example name of the VM.
-Replace it with your actual VM's name.
 
 ### 1. Increase performance in macOS Sierra
 
