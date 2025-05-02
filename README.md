@@ -66,8 +66,8 @@ In the `Terminal` app, run the following command:
 2. In the VirtualBox GUI, click **Devices** → **Insert Guest Additions CD
    Image**.
 3. Inside the VM, in Linux Mint, open a web browser and go to this page
-   (https://github.com/hugojosefson/macos-sierra-virtualbox) and scroll down
-   here again 👋
+   ([github.com/hugojosefson/macos-sierra-virtualbox](https://github.com/hugojosefson/macos-sierra-virtualbox))
+   and scroll down here again 👋
 4. Copy the command below:
 
 ```bash
