@@ -37,8 +37,8 @@ You need to know the name of the Virtual Machine (VM) that you want to optimize.
 In the instructions below, I will use `Hugo Linux` as example name of the VM.
 Replace it with your actual VM's name.
 
-You can find yours in the VirtualBox GUI, or by running the following command in
-the `Terminal` app:
+If you don't remember yours, you can find it in the VirtualBox GUI, or by
+running the following command in the `Terminal` app:
 
 ```bash
 VBoxManage list vms
