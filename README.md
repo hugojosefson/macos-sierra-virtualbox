@@ -21,7 +21,7 @@ Open the `Terminal` app in macOS Sierra, and copy-paste the following command
 into it:
 
 ```bash
-curl -fsSL "https://github.com/hugojosefson/macos-sierra-virtualbox/tarball/main" | tar -xzv --strip-components=1 --wildcards \*/macos-sierra-virtualbox-{optimize,check}
+curl -fsSL "https://github.com/hugojosefson/macos-sierra-virtualbox/tarball/main" | tar -xzv --strip-components=1 --wildcards \*/macos-sierra-{optimize,check}
 ```
 
 (Press `ENTER` after each command)
@@ -49,7 +49,7 @@ VBoxManage list vms
 In the `Terminal` app, run the following command:
 
 ```bash
-./macos-sierra-virtualbox-optimize "Hugo Linux"
+./macos-sierra-optimize "Hugo Linux"
 ```
 
 ### 2. Check optimizations in macOS Sierra
@@ -57,7 +57,7 @@ In the `Terminal` app, run the following command:
 In the `Terminal` app, run the following command:
 
 ```bash
-./macos-sierra-virtualbox-check "Hugo Linux"
+./macos-sierra-check "Hugo Linux"
 ```
 
 ### 3. Optimize Linux Mint guest
