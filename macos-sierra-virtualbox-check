@@ -3,6 +3,7 @@ set -uo pipefail
 IFS=$'\t\n'
 
 # Verification script for macOS VirtualBox and system optimization
+# LICENSE: MIT
 main() {
   if [[ $# -ne 1 ]]; then
     echo "Usage: $0 <VM_NAME>" >&2

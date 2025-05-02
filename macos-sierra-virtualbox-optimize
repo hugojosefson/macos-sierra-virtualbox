@@ -3,6 +3,7 @@ set -euo pipefail
 IFS=$'\t\n'
 
 # Full optimization for VirtualBox on macOS Sierra
+# LICENSE: MIT
 main() {
   if [[ $# -ne 1 ]]; then
     echo "Usage: $0 <VM_NAME>" >&2

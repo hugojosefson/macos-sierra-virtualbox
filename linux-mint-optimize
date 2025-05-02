@@ -3,6 +3,7 @@ set -euo pipefail
 IFS=$'\t\n'
 
 # Applies guest optimizations inside Linux Mint VM
+# LICENSE: MIT
 main() {
   echo "Starting Linux Mint guest optimizations..." >&2
   install_guest_additions
